@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小星星奇遇记 - 知识冒险乐园</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 欢迎界面 -->
+    <div id="screen-welcome" class="screen active">
+      <div class="stars-bg"></div>
+      <div class="welcome-content">
+        <div class="title-star">⭐</div>
+        <h1 class="game-title">小星星奇遇记</h1>
+        <p class="game-subtitle">知识冒险乐园</p>
+        <div class="mascot-welcome">
+          <div class="mascot-body">🌟</div>
+          <div class="speech-bubble">你好呀！我是小星星，一起去冒险吧！</div>
+        </div>
+        <button class="btn btn-start" onclick="Game.showNameInput()">开始冒险</button>
+        <button class="btn btn-continue" id="btn-continue" style="display:none" onclick="Game.continueGame()">继续冒险</button>
+        <button class="btn btn-parent" onclick="Game.showParentLogin()">👨‍👩‍👧 家长中心</button>
+      </div>
+    </div>
+
+    <!-- 输入名字 -->
+    <div id="screen-name" class="screen">
+      <div class="stars-bg"></div>
+      <div class="name-content">
+        <div class="mascot-body bounce">🌟</div>
+        <h2>小冒险家，你叫什么名字呀？</h2>
+        <div class="name-input-wrap">
+          <input type="text" id="player-name" maxlength="8" placeholder="输入你的名字">
+          <button class="btn btn-confirm" onclick="Game.setPlayerName()">出发！</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 世界地图 -->
+    <div id="screen-map" class="screen">
+      <div class="map-header">
+        <div class="player-info">
+          <span class="player-avatar">🌟</span>
+          <span id="map-player-name" class="player-name"></span>
+          <span class="star-count">⭐ <span id="total-stars">0</span></span>
+        </div>
+        <button class="btn btn-small btn-home" onclick="Game.showWelcome()">🏠</button>
+      </div>
+      <h2 class="map-title">知识王国</h2>
+      <p class="map-subtitle" id="map-subtitle">选择一个世界开始冒险吧！</p>
+      <div class="world-grid" id="world-grid"></div>
+    </div>
+
+    <!-- 关卡选择 -->
+    <div id="screen-levels" class="screen">
+      <div class="level-header">
+        <button class="btn btn-small btn-back" onclick="Game.showMap()">← 返回</button>
+        <div class="world-title-bar">
+          <span id="world-icon" class="world-icon-large"></span>
+          <span id="world-name-display"></span>
+        </div>
+      </div>
+      <div class="guardian-intro" id="guardian-intro">
+        <div class="guardian-avatar" id="guardian-avatar"></div>
+        <div class="guardian-speech" id="guardian-speech"></div>
+      </div>
+      <div class="level-grid" id="level-grid"></div>
+    </div>
+
+    <!-- 故事场景 -->
+    <div id="screen-story" class="screen">
+      <div class="story-scene" id="story-scene">
+        <div class="story-bg" id="story-bg"></div>
+        <div class="story-characters">
+          <div class="story-char" id="story-char"></div>
+        </div>
+        <div class="story-dialog">
+          <div class="dialog-name" id="dialog-name"></div>
+          <div class="dialog-text" id="dialog-text"></div>
+          <button class="btn btn-dialog" id="btn-story-next" onclick="Game.nextDialog()">继续 ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 答题界面 -->
+    <div id="screen-question" class="screen">
+      <div class="question-header">
+        <div class="question-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <span class="progress-text" id="progress-text">1/5</span>
+        </div>
+        <div class="question-stars" id="question-stars"></div>
+      </div>
+      <div class="question-body">
+        <div class="question-mascot" id="question-mascot">🌟</div>
+        <div class="question-card">
+          <div class="question-text" id="question-text"></div>
+          <div class="question-hint" id="question-hint"></div>
+        </div>
+        <div class="options-grid" id="options-grid"></div>
+      </div>
+      <div class="feedback-overlay" id="feedback-overlay">
+        <div class="feedback-content" id="feedback-content"></div>
+      </div>
+    </div>
+
+    <!-- 关卡完成 -->
+    <div id="screen-result" class="screen">
+      <div class="result-content">
+        <div class="result-title" id="result-title"></div>
+        <div class="result-stars-display" id="result-stars-display"></div>
+        <div class="result-stats">
+          <div class="stat-item">
+            <span class="stat-label">正确</span>
+            <span class="stat-value" id="stat-correct">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">题目</span>
+            <span class="stat-value" id="stat-total">5</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">用时</span>
+            <span class="stat-value" id="stat-time">0s</span>
+          </div>
+        </div>
+        <div class="result-message" id="result-message"></div>
+        <div class="result-buttons">
+          <button class="btn btn-retry" onclick="Game.retryLevel()">再试一次 🔄</button>
+          <button class="btn btn-next-level" id="btn-next-level" onclick="Game.nextLevel()">下一关 ▶</button>
+          <button class="btn btn-back-map" onclick="Game.showMap()">回到地图 🗺️</button>
+        </div>
+      </div>
+      <div class="confetti-container" id="confetti-container"></div>
+    </div>
+
+    <!-- 世界完成 -->
+    <div id="screen-world-complete" class="screen">
+      <div class="world-complete-content">
+        <div class="gem-animation" id="gem-animation"></div>
+        <h2 class="wc-title" id="wc-title"></h2>
+        <p class="wc-message" id="wc-message"></p>
+        <div class="gem-collection" id="gem-collection"></div>
+        <button class="btn btn-back-map" onclick="Game.showMap()">继续冒险 🗺️</button>
+      </div>
+    </div>
+
+    <!-- 家长中心 -->
+    <div id="screen-parent-login" class="screen">
+      <div class="parent-login-content">
+        <h2>👨‍👩‍👧 家长中心</h2>
+        <p>请输入家长密码（默认：1234）</p>
+        <div class="name-input-wrap">
+          <input type="password" id="parent-password" maxlength="10" placeholder="输入密码">
+          <button class="btn btn-confirm" onclick="Game.parentLogin()">进入</button>
+        </div>
+        <button class="btn btn-small btn-back" onclick="Game.showWelcome()">← 返回</button>
+      </div>
+    </div>
+
+    <div id="screen-dashboard" class="screen">
+      <div class="dashboard-content">
+        <div class="dash-header">
+          <h2>📊 学习报告</h2>
+          <button class="btn btn-small btn-back" onclick="Game.showWelcome()">← 返回</button>
+        </div>
+        <div class="dash-overview" id="dash-overview"></div>
+        <div class="dash-subjects" id="dash-subjects"></div>
+        <div class="dash-history" id="dash-history"></div>
+        <div class="dash-settings">
+          <h3>⚙️ 设置</h3>
+          <div class="setting-item">
+            <label>修改家长密码：</label>
+            <input type="password" id="new-password" maxlength="10" placeholder="新密码">
+            <button class="btn btn-small" onclick="Game.changePassword()">修改</button>
+          </div>
+          <div class="setting-item">
+            <button class="btn btn-danger" onclick="Game.resetProgress()">重置所有进度</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="audio-correct" preload="auto"></audio>
+  <audio id="audio-wrong" preload="auto"></audio>
+  <audio id="audio-star" preload="auto"></audio>
+  <audio id="audio-complete" preload="auto"></audio>
+
+  <script src="data.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
