@@ -1290,3 +1290,78 @@ body {
   .mascot-body { font-size: 3rem; }
   .question-mascot { font-size: 2.5rem; }
 }
+
+/* ===== iPad / 平板适配 ===== */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .world-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 700px;
+  }
+  .options-grid {
+    max-width: 600px;
+  }
+  .option-btn {
+    min-height: 70px;
+    font-size: 1.3rem;
+  }
+  .question-text {
+    font-size: 1.8rem;
+  }
+  .level-card {
+    width: 130px;
+    height: 155px;
+  }
+}
+
+/* ===== 触屏优化 ===== */
+@media (hover: none) and (pointer: coarse) {
+  .btn { -webkit-tap-highlight-color: transparent; }
+  .option-btn { min-height: 60px; }
+  .option-btn:hover {
+    transform: none;
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+  }
+  .option-btn.option-a:hover { border-color: rgba(255,107,157,0.4); background: rgba(255,255,255,0.06); }
+  .option-btn.option-b:hover { border-color: rgba(96,165,250,0.4); background: rgba(255,255,255,0.06); }
+  .option-btn.option-c:hover { border-color: rgba(74,222,128,0.4); background: rgba(255,255,255,0.06); }
+  .option-btn.option-d:hover { border-color: rgba(251,191,36,0.4); background: rgba(255,255,255,0.06); }
+  .option-btn:active {
+    transform: scale(0.96);
+    filter: brightness(1.15);
+  }
+  .world-card:hover {
+    transform: none;
+  }
+  .world-card:active {
+    transform: scale(0.97);
+  }
+  .level-card:hover:not(.level-locked) {
+    transform: none;
+  }
+  .level-card:active:not(.level-locked) {
+    transform: scale(0.95);
+  }
+
+  /* iPad Safari 全屏模式下安全区域 */
+  .screen { padding-bottom: env(safe-area-inset-bottom); }
+  .map-header, .level-header, .question-header { padding-top: env(safe-area-inset-top, 10px); }
+}
+
+/* ===== iPad 横屏优化 ===== */
+@media (min-width: 1024px) and (orientation: landscape) {
+  .question-body {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+  }
+  .question-card {
+    flex: 1;
+    min-width: 350px;
+  }
+  .options-grid {
+    flex: 1;
+    min-width: 350px;
+  }
+}
